@@ -1,8 +1,26 @@
 // Faremos aqui nossos testes.
 
-// 1. Ação -> Renderize o component passando um array [] na prop tarefas
-// 1.1 Validação -> Verifique se o texto "Nenhuma tarefa pendente!" está no documento
-// 1.2 Validação -> Garantir que o número 0 não está sendo renderizado em tela
+import { render, screen } from "@testing-library/react"
+import { ListaDeTarefas } from "./ListaDeTarefas"
+import "@testing-library/jest-dom"
+
+describe("Componente de lista de tarefas", () => {
+    it("Deve garantir que 'Nenhuma tarefa pendente' aparece se não houver tarefa", async () => {
+        // 1. Ação -> Renderize o component passando um array [] na prop tarefas
+        render(<ListaDeTarefas tarefas={[]} onExcluir={() => {}}/>)
+
+        // 1.1 Validação -> Verifique se o texto "Nenhuma tarefa pendente!" está no documento
+        const p = await screen.findByText("Nenhuma tarefa pendente!")
+        expect(p).toBeInTheDocument()
+        
+        // 1.2 Validação -> Garantir que o número 0 não está sendo renderizado em tela
+        const zero = screen.queryByText("0")
+        expect(zero).toBeInTheDocument()
+        //findByText -> queryByText
+        //Ambas funções 1.1 e 1.2 só funcionaram depois de transformarem em assincronas
+    });
+})
+
 
 // 2. Ação -> Renderize o componente passando um array com pelo menos 2 tarefas mockadas (ex: id 1 e id 2) e crie um mock para a prop onExcluir (jest.fn()). Não simule nenhum clique ainda.
 
